@@ -1,0 +1,13 @@
+{
+  "plugins": [
+    "transform-decorators-legacy",
+    "transform-export-extensions"
+  ],
+  "presets": [
+    ["env", {
+      "targets": {
+        "browsers": ["last 2 versions", "> 5%", "ie >= 10"]
+      }
+    }], "stage-2", "react"
+  ]
+}
