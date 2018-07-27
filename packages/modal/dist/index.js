@@ -31,26 +31,54 @@ var bool = _propTypes2.default.bool,
 var ModalEntry = (_temp = _class = function (_Component) {
   _inherits(ModalEntry, _Component);
 
-  function ModalEntry() {
+  function ModalEntry(props) {
     _classCallCheck(this, ModalEntry);
 
-    return _possibleConstructorReturn(this, (ModalEntry.__proto__ || Object.getPrototypeOf(ModalEntry)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (ModalEntry.__proto__ || Object.getPrototypeOf(ModalEntry)).call(this, props));
+
+    _this.toggleMouse = function () {
+      _this.setState({ respectMouse: !_this.state.respectMouse });
+    };
+
+    _this.toggleModal = function () {
+      if (_this.state.respectMouse) {
+        _this.props.toggleModal();
+      }
+    };
+
+    _this.state = {
+      respectMouse: true
+    };
+    return _this;
   }
 
   _createClass(ModalEntry, [{
     key: 'render',
     value: function render() {
-      var _props = this.props,
-          isOpen = _props.isOpen,
-          toggleModal = _props.toggleModal;
+      var _this2 = this;
 
+      var isOpen = this.props.isOpen;
 
       if (!isOpen) return null;
 
+      //HEADER TYPE AND BODY TYPE FO JS STYLES
+
       return _react2.default.createElement(
         _styles.Container,
-        { onClick: toggleModal },
-        this.props.children
+        { onClick: this.toggleModal },
+        _react2.default.createElement(
+          _styles.Content,
+          { onMouseEnter: this.toggleMouse, onMouseLeave: this.toggleMouse },
+          this.props.children.map(function (child) {
+            if (child.type !== 'button') return child;
+
+            return _react2.default.createElement(
+              'div',
+              { onClick: _this2.toggleModal, onMouseEnter: _this2.toggleMouse, onMouseLeave: _this2.toggleMouse },
+              child
+            );
+          })
+        )
       );
     }
   }]);

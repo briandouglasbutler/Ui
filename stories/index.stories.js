@@ -1,24 +1,44 @@
 import React from 'react';
-
 import { storiesOf } from '@storybook/react';
-// import { action } from '@storybook/addon-actions';
 
 import Modal from '../packages/modal'
 
-storiesOf('Modal', module)
-  .add('isOpen false', () => (
-    <div>
-      Someone is using our modal:
-      <Modal isOpen={false} toggleModal={() => {}} >
-        <div>I'm drawn in the modal through props.children</div>
-      </Modal>
-    </div>
-  ))
-  .add('isOpen true', () => (
-    <div>
-      Someone is using our modal:
-      <Modal isOpen={true} toggleModal={() => {}} >
-        <div>I'm drawn in the modal through props.children</div>
-      </Modal>
-    </div>
-  ));;
+class TestWrapper extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showmodal:false,
+    }
+  };
+
+  toggleModal = () => {
+    this.setState({ showModal: !this.state.showModal })
+};
+
+SubmitForm = () => {
+  console.log('here I am');
+};
+
+  render() {
+    const { showModal } = this.state;
+    return (
+      <div>
+        <button type="button" onClick={this.toggleModal}>
+        Show me!
+        </button>
+
+        <div>
+          <Modal isOpen={showModal} toggleModal={this.toggleModal}>
+            <div>I'm the header inside the modal</div>
+            <div>I'm the body of the modal</div>
+            <button type="button" onClick={this.SubmitForm}>
+            YES!
+            </button>
+          </Modal>
+        </div>
+      </div>
+    );
+  }
+}
+
+storiesOf('Simple Modal' , module).add('hidden with display: none', () => <TestWrapper />);

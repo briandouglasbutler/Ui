@@ -1,27 +1,54 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Container } from './styles'
+import { Container, Content } from './styles'
 const { bool, func } = PropTypes
 
 class ModalEntry extends Component {
   static propTypes = {
     isOpen: bool.isRequired,
     toggleModal: func.isRequired
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      respectMouse: true,
+    }
   }
 
-  render(){
-    const { isOpen, toggleModal } = this.props
+  toggleMouse = () => {
+    this.setState({ respectMouse: !this.state.respectMouse });
+  };
 
-    if (!isOpen)
-     return null
+  toggleModal = () => {
+    if (this.state.respectMouse) {
+      this.props.toggleModal();
+    }
+  };
+
+  render(){
+    const { isOpen } = this.props;
+    if (!isOpen) return null;
+
+      //HEADER TYPE AND BODY TYPE FO JS STYLES
 
     return (
-      <Container onClick={toggleModal}>
-        {this.props.children}
+      <Container onClick={this.toggleModal}>
+        <Content onMouseEnter={this.toggleMouse} onMouseLeave={this.toggleMouse}>
+        {this.props.children.map(child => {
+          if (child.type !== 'button') return child;
+
+          return (
+            <div onClick={this.toggleModal} onMouseEnter={this.toggleMouse} onMouseLeave={this.toggleMouse}>
+              {child}
+            </div>
+          );
+        })}
+        </Content>
       </Container>
-    )
+    );
   }
 }
 
-export default ModalEntry
+export default ModalEntry;
